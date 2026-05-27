@@ -51,6 +51,20 @@ header p {
     margin-bottom: 20px;
 }
 
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+}
+
+.checkbox-group label {
+    margin-bottom: 0;
+}
+
 label {
     display: block;
     margin-bottom: 8px;

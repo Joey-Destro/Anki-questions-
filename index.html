@@ -29,8 +29,21 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="card-type-select">Card Type</label>
+                    <select id="card-type-select" class="form-control">
+                        <option value="basic">Basic Q&A</option>
+                        <option value="cloze">Cloze Deletion</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="study-notes">Study Notes</label>
                     <textarea id="study-notes" placeholder="Paste your study notes here..." rows="10" required></textarea>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="include-image">
+                    <label for="include-image">Include Image Search (Wikimedia)</label>
                 </div>
 
                 <button id="generate-btn" class="primary-btn">Generate Cards</button>
