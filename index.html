@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anki Flashcard Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Anki Flashcard Generator</h1>
+            <p>Generate high-quality Anki flashcards from your study notes using Gemini AI.</p>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <div class="form-group">
+                    <label for="api-key">Gemini API Key</label>
+                    <input type="password" id="api-key" placeholder="Enter your Gemini API key here..." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="study-notes">Study Notes</label>
+                    <textarea id="study-notes" placeholder="Paste your study notes here..." rows="10" required></textarea>
+                </div>
+
+                <button id="generate-btn" class="primary-btn">Generate Cards</button>
+            </section>
+
+            <section class="results-section">
+                <div class="form-group">
+                    <label for="results">Generated Cards Preview (Question;Answer)</label>
+                    <textarea id="results" placeholder="Generated flashcards will appear here..." rows="10" readonly></textarea>
+                </div>
+
+                <button id="download-btn" class="secondary-btn" disabled>Download as .csv</button>
+            </section>
+
+            <div id="loading" class="hidden">
+                <p>Generating cards... Please wait.</p>
+            </div>
+            <div id="error-message" class="hidden error">
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
