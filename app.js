@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const apiKeyInput = document.getElementById('api-key');
+    const modelSelectInput = document.getElementById('model-select');
     const studyNotesInput = document.getElementById('study-notes');
     const generateBtn = document.getElementById('generate-btn');
     const resultsArea = document.getElementById('results');
@@ -22,6 +23,7 @@ Follow these strict rules for formatting:
 
     generateBtn.addEventListener('click', async () => {
         const apiKey = apiKeyInput.value.trim();
+        const selectedModel = modelSelectInput.value;
         const studyNotes = studyNotesInput.value.trim();
 
         if (!apiKey) {
@@ -40,7 +42,7 @@ Follow these strict rules for formatting:
         downloadBtn.disabled = true;
 
         try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -59,7 +59,8 @@ label {
 
 input[type="text"],
 input[type="password"],
-textarea {
+textarea,
+select.form-control {
     width: 100%;
     padding: 12px;
     border: 1px solid var(--border-color);
@@ -70,7 +71,8 @@ textarea {
 
 input[type="text"]:focus,
 input[type="password"]:focus,
-textarea:focus {
+textarea:focus,
+select.form-control:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
