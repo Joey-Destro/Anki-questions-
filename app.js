@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modelSelectInput = document.getElementById('model-select');
     const cardTypeSelectInput = document.getElementById('card-type-select');
     const studyNotesInput = document.getElementById('study-notes');
+    const imageUploadInput = document.getElementById('image-upload');
     const includeImageCheckbox = document.getElementById('include-image');
     const generateBtn = document.getElementById('generate-btn');
     const resultsArea = document.getElementById('results');
@@ -58,11 +59,23 @@ Follow these strict rules for formatting:
 4. ABSOLUTELY NO markdown formatting, headers, bold text, bullet points, or conversational filler.`;
 
 
+    // Helper function to read file as base64
+    const fileToBase64 = (file) => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64String = reader.result.split(',')[1];
+            resolve(base64String);
+        };
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+
     generateBtn.addEventListener('click', async () => {
         const apiKey = apiKeyInput.value.trim();
         const selectedModel = modelSelectInput.value;
         const selectedCardType = cardTypeSelectInput.value;
         const studyNotes = studyNotesInput.value.trim();
+        const imageFile = imageUploadInput.files[0];
         const includeImage = includeImageCheckbox.checked;
 
         let currentPrompt = selectedCardType === 'cloze' ? SYSTEM_PROMPT_CLOZE : SYSTEM_PROMPT_BASIC;
@@ -75,8 +88,8 @@ Follow these strict rules for formatting:
             return;
         }
 
-        if (!studyNotes) {
-            showError("Please enter some study notes.");
+        if (!studyNotes && !imageFile) {
+            showError("Please enter some study notes or upload an image.");
             return;
         }
 
@@ -86,6 +99,20 @@ Follow these strict rules for formatting:
         downloadBtn.disabled = true;
 
         try {
+            let requestParts = [];
+            if (studyNotes) {
+                requestParts.push({ text: studyNotes });
+            }
+            if (imageFile) {
+                const base64Data = await fileToBase64(imageFile);
+                requestParts.push({
+                    inline_data: {
+                        mime_type: imageFile.type,
+                        data: base64Data
+                    }
+                });
+            }
+
             const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: {
@@ -99,9 +126,7 @@ Follow these strict rules for formatting:
                     },
                     contents: [
                         {
-                            parts: [
-                                { text: studyNotes }
-                            ]
+                            parts: requestParts
                         }
                     ],
                     generationConfig: {
