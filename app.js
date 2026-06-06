@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-btn');
     const resultsArea = document.getElementById('results');
     const downloadBtn = document.getElementById('download-btn');
+    const copyBtn = document.getElementById('copy-btn');
     const loadingIndicator = document.getElementById('loading');
     const errorMessage = document.getElementById('error-message');
 
@@ -97,6 +98,8 @@ Follow these strict rules for formatting:
         setLoading(true);
         resultsArea.value = '';
         downloadBtn.disabled = true;
+        copyBtn.disabled = true;
+        copyBtn.textContent = 'Copy to Clipboard';
 
         try {
             let requestParts = [];
@@ -187,6 +190,7 @@ Follow these strict rules for formatting:
 
                 resultsArea.value = generatedText;
                 downloadBtn.disabled = false;
+                copyBtn.disabled = false;
             } else {
                 throw new Error("Invalid response format from Gemini API.");
             }
@@ -216,6 +220,23 @@ Follow these strict rules for formatting:
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
         }, 0);
+    });
+
+    copyBtn.addEventListener('click', async () => {
+        const text = resultsArea.value;
+        if (!text) return;
+
+        try {
+            await navigator.clipboard.writeText(text);
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+            showError('Failed to copy text to clipboard.');
+        }
     });
 
     function showError(message) {
